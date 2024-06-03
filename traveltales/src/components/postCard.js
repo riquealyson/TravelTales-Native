@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -17,7 +18,7 @@ export default function PostCard({ posts }) {
                         <Image source={p.profileImg} style={styles.perfilFoto} />
                         <Text style={styles.perfilNome}>{p.profileNome}</Text>
                         <MaterialIcons name="bookmark" size={24} />
-                        <Image source={p.postImg} />
+                        <Image source={p.postImg} style={styles.perfilPost} />
                     </View>
                 ))}
         </SafeAreaView>
@@ -26,19 +27,26 @@ export default function PostCard({ posts }) {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        padding: 16,
         paddingTop: 25,
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-between',
+        alignContent: 'space-around',
+        flexDirection: 'row',
+        flexWrap: 'wrap'
     },
     perfilNome: {
+        flex: 1,
         color: '#e88046',
-        fontSize: '23px',
+        fontSize: 20,
     },
     perfilFoto: {
-        width: 36,
-        height: 36
+        width: 35,
+        height: 40
     },
     perfilPost: {
-        flex: 1
+        width: 400,
+        height: 350
     }
 })
