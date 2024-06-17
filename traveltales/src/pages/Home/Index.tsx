@@ -1,10 +1,9 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, ScrollView, View, Text, Dimensions } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text} from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import PostCard from '../../components/postCard'
 
-const { width: screenWidth } = Dimensions.get('window');
 
 
 
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     },
     pesquisar: {
         flexDirection: 'row',
-        width: screenWidth * 0.8,
+        width: '80%',
         marginTop: 24,
         marginBottom: 32,
         padding: '2%',

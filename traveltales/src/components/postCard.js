@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Image, StyleSheet, Text, View, Dimensions } from "react-native";
+import {TouchableOpacity, Image, StyleSheet, Text, View, Dimensions } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -12,6 +12,7 @@ export default function PostCard({ posts }) {
     useEffect(() => {
         setPosts(posts);
     }, [posts]);
+    
     return (
         <View>
             {postsData &&
@@ -20,10 +21,17 @@ export default function PostCard({ posts }) {
                         <View style={styles.containerHeader}>
                             <Image source={p.profileImg} style={styles.perfilFoto} />
                             <Text style={styles.perfilNome}>{p.profileNome}</Text>
-                            <MaterialIcons
-                                name={screenWidth > 500 ? "bookmark-outline" : "bookmark-outline"}
-                                size={screenWidth > 500 ? 48 : 32}
-                                color={'#E88046'} />
+                            <TouchableOpacity 
+                                onPress={() => {
+                                    
+
+                                }}>
+
+                                <MaterialIcons
+                                    name={screenWidth > 500 ? "bookmark-outline" : "bookmark-outline"}
+                                    size={screenWidth > 500 ? 48 : 32}
+                                    color={'#E88046'} />
+                            </TouchableOpacity>
                         </View>
                         <Image source={p.postImg} style={styles.perfilPost} />
                     </View>
