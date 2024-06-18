@@ -17,7 +17,6 @@ export default function Salvos() {
             </Text>
             <ScrollView>
                 <PostCard posts={posts} />
-
             </ScrollView>
 
         </SafeAreaView>
@@ -39,9 +38,10 @@ const styles = StyleSheet.create({
         fontSize: 30,
         paddingHorizontal: 10,
         paddingVertical: 4,
-        margin: '6%',
         borderTopLeftRadius: 20,
-        borderBottomRightRadius: 20
+        borderBottomRightRadius: 20,
+        marginTop: 24,
+        marginBottom: 32
 
     }
 })
