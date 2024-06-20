@@ -24,7 +24,7 @@ export default function Cadastro({ navigation }) {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/create', {
+      const response = await fetch('http://192.168.0.105:3001/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

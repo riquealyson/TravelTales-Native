@@ -1,17 +1,47 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function Login({ navigation }) {
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [error, setError] = useState('');
+  
+    const handleLogin = async () => {
+      try {
+        const response = await fetch('http://192.168.0.105:3001/login', { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+  
+        const data = await response.json();
+  
+        if (response.status === 200) {
+          await AsyncStorage.setItem('user', JSON.stringify(data.user));
+          limpar()
+          navigation.navigate('Main');
+        } else {
+          setError(data.message);
+        }
+      } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        setError('Erro ao fazer login, tente novamente mais tarde.');
+      }
+    };
 
-    const handleLogin = () => {
-
-    }
-
-    const handleOpenModal = () => {
+    const handleCad = () => {
         navigation.navigate('Cadastro')
     };
+    function limpar(){
+        setEmail('')
+        setSenha('')
+    }
 
     return (
         <LinearGradient
@@ -27,21 +57,26 @@ export default function Login({ navigation }) {
                     <TextInput
                         style={styles.input}
                         placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
                         placeholderTextColor="gray"
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Senha"
+                        value={senha}
+                        onChangeText={setSenha}
                         placeholderTextColor="gray"
                         secureTextEntry
                     />
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
                     <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                         <Text style={styles.loginButtonText}>Entrar</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.signupContainer}>
                     <Text style={styles.signupText}>Não tem uma conta ainda?</Text>
-                    <TouchableOpacity onPress={handleOpenModal}>
+                    <TouchableOpacity onPress={handleCad}>
                         <Text style={styles.signupLink}>Cadastre-se</Text>
                     </TouchableOpacity>
                 </View>

@@ -1,11 +1,21 @@
 import React from "react";
 import { TouchableOpacity, StatusBar, Image, StyleSheet, SafeAreaView, View, Text } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function Profile() {
+export default function Profile({navigation}) {
     const nomeUser = 'olee'
     const emailUser = 'userEmail'
+
+    const logout = async () => {
+        try {
+          await AsyncStorage.removeItem('user');
+          navigation.navigate('Login');
+        } catch (error) {
+          console.error('Erro ao deslogar:', error.message);
+        }
+      };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -22,7 +32,9 @@ export default function Profile() {
                 <Text style={styles.texto1}>Email</Text>
                 <Text style={styles.dado}>{emailUser}</Text>
                 <TouchableOpacity style={styles.linha}>
-                    <MaterialIcons name="exit-to-app" size={32} color={'#A5D7C6'}/>
+                    <MaterialIcons name="exit-to-app" size={32} color={'#A5D7C6'}
+                        onPress={logout}
+                    />
                     <Text style={styles.texto}> Deslogar </Text>
                 </TouchableOpacity>
 

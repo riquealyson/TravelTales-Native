@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Header, createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import Home from "./pages/Home/Index";
 import Salvos from "./pages/Salvos";
 import Profile from "./pages/Profile/Index";
 import Buscar from "./pages/Buscar";
+
 
 
 const Nav = createBottomTabNavigator();
@@ -189,7 +190,9 @@ export default function Routes() {
                         }
                         return <Ionicons name="person-outline" size={28} color={'#E88046'} />
                     }
-                }} />
+                }}
+            />
+
 
         </Nav.Navigator>
     )
