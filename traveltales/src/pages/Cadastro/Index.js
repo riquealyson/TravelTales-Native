@@ -1,25 +1,55 @@
-import React from "react";
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
+export default function Cadastro({ navigation }) {
+  const [nome, setNome] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmSenha, setConfirmSenha] = useState('');
 
+  const handleCadastro = async () => {
+    if (senha !== confirmSenha) {
+      Alert.alert("Erro", "As senhas não coincidem");
+      return;
+    }
 
-export default function Cadastro({navigation}) {
-  const handleCadastro = () => {
-    // Adicione aqui a lógica de cadastro
+    const User = {
+      nome,
+      username,
+      email,
+      senha,
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(User)
+      });
+
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      Alert.alert("Erro", "Erro ao conectar-se ao servidor");
+    }
   };
 
-  const [texto, setTexto] = useState('');
+  const limparCampos = () => {
+    setNome('');
+    setUsername('');
+    setEmail('');
+    setSenha('');
+    setConfirmSenha('');
+  };
 
-  const limparTexto = () => {
-    setTexto('')
-  }
   const handleBack = () => {
-    limparTexto()
-    navigation.navigate('Login')
-  }
+    limparCampos();
+    navigation.navigate('Login');
+  };
 
   return (
     <LinearGradient
@@ -27,7 +57,7 @@ export default function Cadastro({navigation}) {
       style={styles.cad}
     >
       <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-      <MaterialIcons name="arrow-back-ios" size={24} color="#b5e1d2" />
+        <MaterialIcons name="arrow-back-ios" size={24} color="#b5e1d2" />
       </TouchableOpacity>
 
       <View style={styles.modal}>
@@ -38,28 +68,32 @@ export default function Cadastro({navigation}) {
           <TextInput
             style={styles.input}
             placeholder="Nome completo"
-            onChangeText={setTexto}
-            placeholderTextColor="gray"
-            required
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            onChangeText={setTexto}
+            value={nome}
+            onChangeText={setNome}
             placeholderTextColor="gray"
             required
           />
           <TextInput
             style={styles.input}
             placeholder="Nome de usuário"
-            onChangeText={setTexto}
+            value={username}
+            onChangeText={setUsername}
+            placeholderTextColor="gray"
+            required
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
             placeholderTextColor="gray"
             required
           />
           <TextInput
             style={styles.input}
             placeholder="Criar senha"
-            onChangeText={setTexto}
+            value={senha}
+            onChangeText={setSenha}
             placeholderTextColor="gray"
             secureTextEntry
             required
@@ -67,7 +101,8 @@ export default function Cadastro({navigation}) {
           <TextInput
             style={styles.input}
             placeholder="Confirmar senha"
-            onChangeText={setTexto}
+            value={confirmSenha}
+            onChangeText={setConfirmSenha}
             placeholderTextColor="gray"
             secureTextEntry
             required
@@ -79,7 +114,7 @@ export default function Cadastro({navigation}) {
       </View>
     </LinearGradient>
   );
-};
+}
 
 const styles = StyleSheet.create({
   cad: {
@@ -110,7 +145,7 @@ const styles = StyleSheet.create({
   cadastrarButton: {
     justifyContent: 'center',
     textAlign: 'center',
-    width: '40%',
+    width: 150,
     height: 56,
     marginVertical: 30,
     borderBottomRightRadius: 25,
@@ -120,11 +155,10 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   btnText: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   logoCad: {
     alignSelf: 'center',
-    
   },
   backButton: {
     position: 'absolute',
@@ -132,6 +166,3 @@ const styles = StyleSheet.create({
     left: '10%',
   },
 });
-
-
-
