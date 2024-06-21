@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,9 +10,27 @@ export default function Login({ navigation }) {
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
   
+    useEffect(()=> {
+        const checkServer = async () => {
+            try {
+              const response = await fetch('http://192.168.0.111:3001/');
+              if (response.ok) {
+                console.log('Servidor está acessível.');
+              } else {
+                console.error('Falha ao acessar o servidor:', response.status);
+              }
+            } catch (error) {
+              console.error('Erro de rede:', error.message);
+            }
+          };
+
+          checkServer()
+    }, [])
+
+
     const handleLogin = async () => {
       try {
-        const response = await fetch('http://192.168.0.105:3001/login', { 
+        const response = await fetch('http://192.168.0.111:3001/login', { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -58,6 +76,7 @@ export default function Login({ navigation }) {
                         style={styles.input}
                         placeholder="Email"
                         value={email}
+                        keyboardType="email-address"
                         onChangeText={setEmail}
                         placeholderTextColor="gray"
                     />

@@ -1,35 +1,46 @@
-import React from "react";
-import { View, SafeAreaView, Text, StyleSheet, ScrollView } from "react-native";
-
-
+import React, { useState, useEffect } from "react";
+import { Text, SafeAreaView, StyleSheet, ScrollView, Alert } from "react-native";
 import PostCard from "../../components/postCard";
 
-const posts = [
-    { profileImg: require('@/assets/perfil1.png'), profileNome: 'Hannah Baker', postImg: require('@/assets/postImg1.png') },
-    { profileImg: require('@/assets/perfil2.png'), profileNome: 'Caleb Vitor', postImg: require('@/assets/postImg2.png') }
-]
+const Salvos = () => {
+    const [postsData, setPostsData] = useState([]);
 
-export default function Salvos() {
+    useEffect(() => {
+        loadSavedPosts();
+    }, []);
+
+    const loadSavedPosts = async () => {
+        try {
+            const response = await fetch("http://192.168.0.111:3001/posts");
+            if (response.ok) {
+                const savedPosts = await response.json();
+                setPostsData(savedPosts);
+            } else {
+                throw new Error(`Erro ao carregar posts salvos: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Erro ao carregar posts salvos:', error);
+            Alert.alert('Erro ao carregar posts salvos, tente novamente mais tarde.');
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.titulo}>
                 Lugares salvos
             </Text>
             <ScrollView>
-                <PostCard posts={posts} />
+                <PostCard posts={postsData} setPosts={setPostsData} />
             </ScrollView>
-
         </SafeAreaView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginBottom: 0,
         backgroundColor: '#FFFDFC',
-        justifyContent: 'top',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     titulo: {
         backgroundColor: '#E88046',
@@ -41,7 +52,8 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderBottomRightRadius: 20,
         marginTop: 24,
-        marginBottom: 32
+        marginBottom: 32,
+    },
+});
 
-    }
-})
+export default Salvos;

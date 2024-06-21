@@ -10,6 +10,16 @@ const Users = mongoose.model('Users', {
     senha: String
 })
 
+const Salvos = mongoose.model('Salvos', {
+    cod: String,
+    id_user: String,
+    profileImg: String,
+    profileNome: String,
+    postImg: String
+    
+})
+
+
 routes.get('/read', async (req, res) => {
     const users = await Users.find()
     return res.send(users)
@@ -71,5 +81,36 @@ routes.post('/login', async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 });
+
+
+
+routes.post('/salvarPost', async (req, res) => {
+    try {
+        const { cod, id_user, profileImg, profileNome, postImg } = req.body;
+
+        const postSalvo = new Salvos({
+            cod,
+            id_user,
+            profileImg,
+            profileNome,
+            postImg
+        });
+
+        await postSalvo.save();
+        return res.status(200).json(postSalvo);
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ message: 'Erro ao salvar o post' });
+    }
+});
+
+routes.get('/posts', async (req, res) => {
+    const posts = await Salvos.find()
+    return res.send(posts)
+})
+routes.delete("/deletePost/:id", async (req, res) => {
+    const user = await Users.findByIdAndDelete(req.params.id)
+    return res.send(user)
+})
 
 module.exports = routes;
